@@ -10,6 +10,7 @@ gem 'webrat'
 
 group :development do
   gem 'rspec-rails', ">=2.0.0.beta.22"
+  gem 'annotate-models', ">=1.0.4"
 end
 
 group :test do
