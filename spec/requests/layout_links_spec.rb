@@ -40,7 +40,7 @@ describe "LayoutLinks" do
     click_link "Sign up now!"
     response.should have_selector("title", :content => "Sign up")
   end
-
+ 
 end
 
      
