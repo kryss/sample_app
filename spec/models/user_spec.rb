@@ -5,7 +5,7 @@ describe User do
   before(:each) do
     @attr = { 
       :name => "Example User", 
-      :email => "user@example.com",
+      :email => "user222@example.com",
       :password => "foobar",
       :password_confirmation => "foobar"  
       }  
