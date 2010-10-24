@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
-  
+ 
+  before_filter :signed_user, :only => [:new, :create] 
   before_filter :authenticate, :only => [:index, :edit, :update, :destroy]
   before_filter :correct_user, :only => [:edit, :update]
   before_filter :admin_user, :only => :destroy
@@ -7,7 +8,7 @@ class UsersController < ApplicationController
   def new
     @title = "Sign up"
     @user = User.new   
-  end
+  end 
 
   def show  
     @user = User.find(params[:id])
@@ -69,6 +70,14 @@ class UsersController < ApplicationController
 
   def admin_user
      redirect_to(root_path) unless current_user.admin?
+     if (User.find(params[:id]).admin?)
+       flash[:notice] = "Cannot delete admin users !"
+       redirect_to :back
+     end
+  end
+
+  def signed_user
+     redirect_to(root_path) if signed_in? 
   end
 
 end

@@ -70,6 +70,18 @@ describe UsersController do
       response.should have_selector("input[name='user[password_confirmation]'][type='password']")
     end
 
+    describe "for signed-in users" do
+      before(:each) do
+        @user = test_sign_in(Factory(:user))  
+      end
+      
+      it "should deny access to 'new'" do
+        get :new
+        response.should redirect_to(root_path)
+      end 
+    end
+
+
   end
   
   describe "POST 'create'" do
@@ -136,7 +148,16 @@ describe UsersController do
         
     end
 
-    
+    describe "for signed-in users" do
+      before(:each) do
+        @user = test_sign_in(Factory(:user))  
+      end
+      
+      it "should deny access to 'create'" do
+        get :create
+        response.should redirect_to(root_path)
+      end 
+    end
   end
 
   describe "GET 'edit" do 
@@ -265,6 +286,30 @@ describe UsersController do
 
       
     end
+
+    describe "for non-admin users" do
+      before(:each) do
+        no_admin = Factory(:user, :email => "noadmin@example.com")
+        test_sign_in(no_admin)
+      end
+       
+      it "should not see destroy links" do
+        get :index 
+        response.should_not have_selector("a", :content => "delete")
+      end
+    end
+
+    describe "for admin users" do
+      before(:each) do
+        admin = Factory(:user, :email => "admin@example.com", :admin => true)
+        test_sign_in(admin)
+      end
+      
+      it "should see destroy links" do
+        get :index 
+        response.should have_selector("a", :content => "delete")
+      end
+    end
   end
 
   describe "authentication of edit/update pages" do
@@ -299,15 +344,13 @@ describe UsersController do
         put :update, :id => @user, :user => {}
         response.should redirect_to(root_path)
       end
-
-      
-      
     end
   end
 
   describe "DELETE 'destroy'" do
     before(:each) do
       @user = Factory(:user)
+      request.env["HTTP_REFERER"] = '/'
     end
     
     describe "as a non-signed-in user" do
@@ -327,8 +370,8 @@ describe UsersController do
      describe "as an admin user" do
 
       before(:each) do
-        admin = Factory(:user, :email => "admin@example.com", :admin => true)
-        test_sign_in(admin)
+        @admin = Factory(:user, :email => "admin@example.com", :admin => true)
+        test_sign_in(@admin)
       end
 
       it "should destroy the user" do
@@ -340,6 +383,12 @@ describe UsersController do
       it "should redirect to the users page" do
         delete :destroy, :id => @user
         response.should redirect_to(users_path)
+      end
+      
+      it "should not delete admin users" do
+        lambda do
+        delete :destroy, :id => @admin
+        end.should_not change(User, :count).by(-1)
       end
     end
 
