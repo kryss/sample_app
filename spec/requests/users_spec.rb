@@ -39,7 +39,7 @@ describe "Users" do
     end
 
   end
-cookies
+
   describe "sign in/out" do
 
     describe "failure" do
