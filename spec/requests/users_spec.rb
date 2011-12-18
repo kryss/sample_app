@@ -3,9 +3,9 @@ require 'spec_helper'
 describe "Users" do
 
   describe "Signup" do
- 
+
     describe "failure" do
-      
+
       it "should not make a new user" do
         lambda do
           visit signup_path
@@ -15,12 +15,12 @@ describe "Users" do
           fill_in "Password confirmation", :with => ""
           click_button
           response.should render_template('users/new')
-          response.should have_selector("div#error_explanation")  
+          response.should have_selector("div#error_explanation")
         end.should_not change(User, :count)
       end
-      
+
     end
-    
+
     describe "success" do
 
       it "should make a new user" do
@@ -67,6 +67,6 @@ describe "Users" do
     end
   end
 
-  
-  
+
+
 end
