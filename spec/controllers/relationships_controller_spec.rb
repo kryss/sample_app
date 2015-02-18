@@ -36,7 +36,7 @@ describe RelationshipsController do
       end.should change(Relationship, :count).by(1)
     end
 
-    
+
   end
 
   describe "DELETE 'destroy'" do
@@ -62,6 +62,6 @@ describe RelationshipsController do
       end.should change(Relationship, :count).by(-1)
     end
 
-    
+
   end
 end

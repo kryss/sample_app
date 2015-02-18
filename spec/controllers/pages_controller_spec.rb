@@ -56,7 +56,7 @@ describe PagesController do
                                     :content => "Contact")
     end
   end
-  
+
   describe "GET 'about'" do
     it "should be successful" do
       get 'about'
@@ -70,7 +70,7 @@ describe PagesController do
   end
 
   describe "GET 'help'" do
-    it "should be successful" do 
+    it "should be successful" do
       get 'help'
       response.should be_success
     end
